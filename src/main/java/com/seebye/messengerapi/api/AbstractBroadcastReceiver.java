@@ -29,7 +29,7 @@ public abstract class AbstractBroadcastReceiver extends BroadcastReceiver
 	{
 		if(intent.getExtras() != null)
 		{
-			new BroadcastProcessor(intent).start();
+			processResponse(intent);
 		}
 	}
 
@@ -171,22 +171,4 @@ public abstract class AbstractBroadcastReceiver extends BroadcastReceiver
 	 *                          For example: The class of the activity or the class of the view (=> floating component).
 	 */
 	protected void onAppComponentBecomesVisible(@NonNull String strPackage, @NonNull String strClass) {}
-
-
-
-	private class BroadcastProcessor extends Thread
-	{
-		private Intent m_intent;
-
-		public BroadcastProcessor(Intent intent)
-		{
-			m_intent = intent;
-		}
-
-		@Override
-		public void run()
-		{
-			processResponse(m_intent);
-		}
-	}
 }
