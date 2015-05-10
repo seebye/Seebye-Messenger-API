@@ -51,6 +51,18 @@ public class Message implements Parcelable
 		m_strGroupContact = strGroupContact;
 	}
 
+	public Message(Message msg)
+	{
+		m_lId = msg.m_lId;
+		m_strIDMessenger = msg.m_strIDMessenger;
+		m_nMessenger = msg.m_nMessenger;
+		m_strData = msg.m_strData;
+		m_type = msg.m_type;
+		m_bOut = msg.m_bOut;
+		m_tsCreated = msg.m_tsCreated;
+		m_strGroupContact = msg.m_strGroupContact;
+	}
+
 	private Message(Parcel in)
 	{
 		readFromParcel(in);
@@ -152,6 +164,20 @@ public class Message implements Parcelable
 	public int describeContents()
 	{
 		return 0;
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("id %d idmessenger %s messenger %d data %s type %d out %d created %d groupcontact %s"
+				, m_lId
+				, m_strIDMessenger
+				, m_nMessenger
+				, m_strData
+				, m_type.ordinal()
+				, m_bOut ? 1 : 0
+				, m_tsCreated
+				, m_strGroupContact);
 	}
 
 	@Override

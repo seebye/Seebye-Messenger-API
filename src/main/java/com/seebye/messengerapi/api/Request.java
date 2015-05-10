@@ -140,17 +140,6 @@ public class Request
 			this(responseType, action, lID, null, strPackage);
 		}
 
-		/**
-		 * Also only used by Seebye Messenger API.
-		 */
-		public Builder reuse(String strPackage, String strSecret)
-		{
-			m_strSecret = strSecret;
-			m_strPackage = strPackage;
-
-			return this;
-		}
-
 		private long determineID()
 		{
 			long lID = 0;
@@ -250,7 +239,7 @@ public class Request
 		{
 			return new Intent(General.ACTION_MESSENGERAPI)
 					.setPackage(App.getInstance().isModule() ? General.PKG_MESSENGERAPI : m_strPackage)
-					.putExtras(m_data)
+					.putExtras((Bundle)m_data.clone())
 					// add sender package
 					.putExtra(Extra.PKG.getKey(), App.getInstance().getPackageName());
 		}

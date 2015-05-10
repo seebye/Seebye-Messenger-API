@@ -7,7 +7,11 @@ package com.seebye.messengerapi.api.constants;
 public enum Extra
 {
 	CHECK_HASH				("checkhash")
-	, PKG					("package")
+	,
+	/**
+	 * Don't use this extra.
+	 */
+	PKG					("package")
 	, ACTION				("action")
 	, BROADCASTID			("id")
 	, SECRET_OLD			("oldsecret")
@@ -29,7 +33,8 @@ public enum Extra
 	, NAME					("name")
 	, MESSAGE				("msg")
 	, CONVERSATIONOPENED	("convopened")
-	, RECT					("rect");
+	, RECT					("rect")
+	, PKG2					("package2");
 
 	private String m_strKey;
 

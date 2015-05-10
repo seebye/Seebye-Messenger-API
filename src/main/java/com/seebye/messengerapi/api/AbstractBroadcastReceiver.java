@@ -43,15 +43,11 @@ public abstract class AbstractBroadcastReceiver extends BroadcastReceiver
 		String strSecret = App.getSPAPI().getStr(SPKey.SECRET);
 		ResponseType responseType = ResponseType.fromOrdinal(extras.getInt(Extra.RESPONSE_TYPE.getKey()));
 
-		String strDump = "";
-		for (String key : intent.getExtras().keySet()) {
-			Object value = intent.getExtras().get(key);
-			strDump += String.format("\n%s %s (%s)", key, value.toString(), value.getClass().getName());
-		}
-		LogUtils.i("BROADCAST received " + intent.toString() + strDump);
-
 		extras.remove(Extra.PKG.getKey());
 		extras.remove(Extra.CHECK_HASH.getKey());
+
+		LogUtils.i("BROADCAST received " + LogUtils.dumpIntent(intent));
+
 
 		if(intent.getAction().equals(General.ACTION_MESSENGERAPI)
 				&& nAction != -1)
@@ -79,7 +75,7 @@ public abstract class AbstractBroadcastReceiver extends BroadcastReceiver
 				switch(Action.fromOrdinal(nAction))
 				{
 					case informAppComponentVisible:
-						onAppComponentBecomesVisible(extras.getString(Extra.PKG.getKey()), extras.getString(Extra.CLASS.getKey()));
+						onAppComponentBecomesVisible(extras.getString(Extra.PKG2.getKey()), extras.getString(Extra.CLASS.getKey()));
 						break;
 					case informConversationOpened:
 						onConversationOpened(Messenger.fromFlag(extras.getInt(Extra.MESSENGER.getKey()))

@@ -9,6 +9,7 @@ import com.seebye.messengerapi.api.constants.MessageType;
 import com.seebye.messengerapi.api.constants.Messenger;
 import com.seebye.messengerapi.api.constants.SPKey;
 import com.seebye.messengerapi.api.utils.PackageUtils;
+import com.seebye.messengerapi.api.utils.WhatsAppUtils;
 
 /**
  * Created by Nico on 11.04.2015.
@@ -182,25 +183,27 @@ public class MessengerAPI
 
 
 	/**
-	 * Loads the location of the profile image.
+	 * Determines the location of the profile image.
 	 * !! There's no guarantee that the file will exist
 	 * !! Do NOT change or delete the images.
 	 *
 	 * @param messenger			The messenger which should be used.
 	 * @param strIDMessenger	The ID of the contact, given by the messenger.
 	 *
-	 * @return The id of the broadcast.
-	 * @throws Exception
+	 * @return The absolute path of the image
 	 */
-	public static Request getContactProfileImage(@NonNull Messenger messenger, @NonNull String strIDMessenger) throws
-			Exception
+	public static String getContactProfileImage(@NonNull Messenger messenger, @NonNull String strIDMessenger)
 	{
-		checkIDMessenger(strIDMessenger);
+		StringBuilder strBuilderPath = new StringBuilder();
 
-		return new Request.Builder(Action.getContactImage)
-				.add(Extra.MESSENGER, messenger.getFlag())
-				.add(Extra.ID_MESSENGER, strIDMessenger)
-				.create();
+		switch(messenger)
+		{
+			case WHATSAPP:
+				strBuilderPath.append(WhatsAppUtils.getProfileImagePath(strIDMessenger));
+				break;
+		}
+
+		return strBuilderPath.toString();
 	}
 
 
