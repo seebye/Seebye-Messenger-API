@@ -38,7 +38,7 @@ public class PackageUtils
 			}
 			catch (PackageManager.NameNotFoundException e)
 			{
-				e.printStackTrace();
+			//	e.printStackTrace();
 			}
 		}
 

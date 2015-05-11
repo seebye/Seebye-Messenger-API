@@ -1,5 +1,7 @@
 package com.seebye.messengerapi.api;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.seebye.messengerapi.api.constants.Action;
@@ -66,19 +68,21 @@ public class MessengerAPI
 	}
 
 	/**
-	 * Determines whether the API is installed.
+	 * Determines whether the API is installed or not.
 	 */
-	public static boolean isAPIInstalled()
+	public static boolean isInstalled()
 	{
 		return PackageUtils.exists(General.PKG_MESSENGERAPI);
 	}
 
 	/**
-	 * Determines whether the API is installed or not.
+	 * Opens the Play Store-site of Seebye Messenger API
 	 */
-	public static boolean isInstalled()
+	public static void openPlayStoreEntry()
 	{
-		return PackageUtils.exists(General.ACTION_MESSENGERAPI);
+		App.getInstance().startActivity(new Intent(Intent.ACTION_VIEW)
+				.setData(Uri.parse("market://details?id=" + General.PKG_MESSENGERAPI))
+				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 	}
 
 	private static void checkIDMessenger(String strIDMessenger) throws Exception

@@ -31,7 +31,7 @@ public class App extends Application
 
 		if(isModule())
 		{
-			if(MessengerAPI.isAPIInstalled())
+			if(MessengerAPI.isInstalled())
 			{
 				initializeModul();
 			}
@@ -52,7 +52,6 @@ public class App extends Application
 
 	/**
 	 * This method should be used by the API only.
-	 * If you want to use my SharedPreferences class you're free to add a method by your own.
 	 */
 	public static sp getSPAPI()
 	{
