@@ -63,16 +63,23 @@ public class Request
 
 	public Request send()
 	{
-		Intent intent = m_i;
-
-		String strDump = "";
-		for (String key : intent.getExtras().keySet()) {
-			Object value = intent.getExtras().get(key);
-			strDump += String.format("\n%s %s (%s)", key, value.toString(), value.getClass().getName());
-		}
-		LogUtils.i("sending broadcast " + intent.toString() + strDump);
+		LogUtils.i("sending broadcast " + LogUtils.dumpIntent(m_i));
 		App.getInstance().sendBroadcast(m_i);
 		return this;
+	}
+
+	/**
+	 * This method is used to request the secret.
+	 * It sends the broadcast by determining the component which should receives the broadcast.
+	 * It's needed to do so as newly installed apps aren't able to receive broadcast which are less explicit until their first start.
+	 * -> We do it this way to start the API.
+	 *
+	 * You shouldn't need to use this method -> Use {@link #send()} to use the API
+	 */
+	public Request sendMoreExplicit()
+	{
+		m_i.setComponent(PackageUtils.getBroadcastWithAction(m_i.getPackage(), General.ACTION_MESSENGERAPI));
+		return send();
 	}
 
 

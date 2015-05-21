@@ -40,7 +40,6 @@ public class MessengerAPI
 
 	/**
 	 * Ask the User to grant access to the API.
-	 * This request will be ignored if the modul is already enabled.
 	 *
 	 * @return The id of the broadcast.
 	 * @throws Exception
@@ -81,7 +80,7 @@ public class MessengerAPI
 	public static void openPlayStoreEntry()
 	{
 		App.getInstance().startActivity(new Intent(Intent.ACTION_VIEW)
-				.setData(Uri.parse("market://details?id=" + General.PKG_MESSENGERAPI))
+				.setData(Uri.parse("market://details?id=" + General.PKG_MESSENGERAPI+"&referrer=utm_source%3D"+App.getInstance().getPackageName()+"%26utm_medium%3DAPIMethod%26utm_campaign%3DAPICampaign"))
 				.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 	}
 

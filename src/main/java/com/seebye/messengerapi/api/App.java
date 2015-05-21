@@ -31,14 +31,11 @@ public class App extends Application
 
 		if(isModule())
 		{
+			InstallReceiver.register();
+
 			if(MessengerAPI.isInstalled())
 			{
 				initializeModul();
-			}
-			else
-			{
-				// yeah we will wait for it to be installed..
-				InstallReceiver.register();
 			}
 		}
 	}
@@ -67,7 +64,7 @@ public class App extends Application
 		}
 
 		LogUtils.i("request secret..");
-		App.getSPAPI().set(SPKey.SECRET_REQUEST_ID, MessengerAPI.requestSecret().send().getID());
+		App.getSPAPI().set(SPKey.SECRET_REQUEST_ID, MessengerAPI.requestSecret().sendMoreExplicit().getID());
 	}
 
 	private void setup()
@@ -86,6 +83,7 @@ public class App extends Application
 			{
 				IntentFilter filter = new IntentFilter();
 				filter.addAction(Intent.ACTION_PACKAGE_ADDED);
+				filter.addAction(Intent.ACTION_PACKAGE_DATA_CLEARED);
 				filter.addDataScheme("package");
 				App.getInstance().registerReceiver(new InstallReceiver(), filter);
 			}
@@ -95,19 +93,21 @@ public class App extends Application
 		@Override
 		public void onReceive(Context context, Intent intent)
 		{
-			String strPackage = intent.getDataString().replaceAll("package:", "");
+			String strPackage = intent.getDataString() == null ? null : intent.getDataString().replaceAll("package:", "");
 
-			if(intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)
+			if(intent.getAction() != null
+					&& (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED) || intent.getAction().equals(Intent.ACTION_PACKAGE_DATA_CLEARED))
 					&& General.PKG_MESSENGERAPI.equals(strPackage))
 			{
-				// API installed - let's initialize the module
-				// sending explicit (more specific than the used one in the API class) broadcast to start the API
-				Intent i = new Intent(General.ACTION_MESSENGERAPI);
-				i.setComponent(PackageUtils.getBroadcastWithAction(General.PKG_MESSENGERAPI, General.ACTION_MESSENGERAPI));
-				context.sendBroadcast(i);
-
+				// our API was installed so let's request our secret to interact with it
+				// (We're going to ignore that this broadcast is also send on updates)
 				App.getInstance().initializeModul();
-				context.unregisterReceiver(this);
+
+				if(intent.getAction().equals(Intent.ACTION_PACKAGE_DATA_CLEARED))
+				{
+					// Data of our API was cleared this module isn't enabled anymore
+					getSPAPI().set(SPKey.ENABLED, false);
+				}
 			}
 		}
 	}

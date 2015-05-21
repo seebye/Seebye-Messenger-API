@@ -52,7 +52,7 @@ public class LuckyUtils
 	 */
 	public static boolean isInstalled()
 	{
-		int nModifiersGetModifiersMethod = 0;
+		/*int nModifiersGetModifiersMethod = 0;
 		int nModifiersGetModifiersConstructor = 0;
 		int nModifiersExists = 0;
 		int nModifiersFixSlashes = 0;
@@ -73,7 +73,7 @@ public class LuckyUtils
 		catch(NoSuchMethodException e)
 		{
 			e.printStackTrace();
-		}
+		}*/
 
 		return
 				s_bFoundInXposed
@@ -111,19 +111,19 @@ public class LuckyUtils
 				// nothing found..
 				// let's do some checks whether there are some methods hocked by xposed
 				// it's not acceptable to hook these methods as they could break our checks.. so we're going to handle them with the same treatment as lp
-				|| (nModifiersExists & Modifier.NATIVE) != 0
+				/*|| (nModifiersExists & Modifier.NATIVE) != 0
 				|| (nModifiersFixSlashes & Modifier.NATIVE) != 0
 				|| (nModifiersFileConstructor & Modifier.NATIVE) != 0
 
 				|| (nModifiersGetModifiersMethod & Modifier.NATIVE) != 0
 				|| (nModifiersGetModifiersConstructor & Modifier.NATIVE) != 0
 
-				/** let's check whether there are some changes on {@link java.security.Signature#verify(byte[])}*/
+				/** let's check whether there are some changes on {@link java.security.Signature#verify(byte[])}* /
 				|| (nModifiersVerify & Modifier.NATIVE) != 0
 
 				// good.. looks like nothing was changed.. let's do a last check on a native method
 				// to see whether the return value is always the same
-				|| (nModifiersCanonicalizePath & Modifier.NATIVE) == 0
+				|| (nModifiersCanonicalizePath & Modifier.NATIVE) == 0*/
 				;
 	}
 }
