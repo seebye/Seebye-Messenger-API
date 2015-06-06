@@ -46,6 +46,27 @@ public class PackageUtils
 	}
 
 	/**
+	 * Determines the version code of a package
+	 *
+	 * @param strPackage
+	 * @return					the version code or 0 on a failure
+	 */
+	public static int getVersionCode(String strPackage)
+	{
+		int nVersionCode = 0;
+		PackageInfo info;
+
+		try
+		{
+			info = App.getInstance().getPackageManager().getPackageInfo(strPackage, 0);
+			nVersionCode = info.versionCode;
+		}
+		catch (PackageManager.NameNotFoundException e) {}
+
+		return nVersionCode;
+	}
+
+	/**
 	 * Determines whether an app with the passed package is installed
 	 *
 	 * @param strPackage
@@ -59,23 +80,29 @@ public class PackageUtils
 
 		if(pm != null)
 		{
-			/*try
+			try
 			{
 				pi = pm.getPackageInfo(strPackage, PackageManager.GET_PERMISSIONS);
 
 				for(int i = 0;
-					i < pi.permissions.length
+					i < pi.requestedPermissions.length
 					&& !bRet
 						; i++)
 				{
-					bRet = pi.permissions[i].name.equals(strPermission);
-				}*/
-				bRet = PackageManager.PERMISSION_GRANTED == pm.checkPermission(strPermission, strPackage);
-			/*}
+					bRet = strPermission.equals(pi.requestedPermissions[i]);
+				}
+
+				/*
+				 * We're going to use the method above as the old method (the comment below) has issues based on the install order.
+				 * The method above looks for the declaration only.
+				 * The method below also checks whether the permission was granted or not. (-> If a module is installed before the API it will always fail.)
+				 */
+				//bRet =PackageManager.PERMISSION_GRANTED == pm.checkPermission(strPermission, strPackage));
+			}
 			catch (PackageManager.NameNotFoundException e)
 			{
 				e.printStackTrace();
-			}*/
+			}
 		}
 
 		return bRet;

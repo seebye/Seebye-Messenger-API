@@ -21,7 +21,7 @@ public class LogUtils
 
 	public static String dumpIntent(Intent intent)
 	{
-		String strDump = "";
+		String strDump = "extras amount: "+intent.getExtras().size()+" ";
 		for (String key : intent.getExtras().keySet()) {
 			Object value = intent.getExtras().get(key);
 			strDump += String.format("\n%s %s (%s)", key, value.toString(), value.getClass().getName());

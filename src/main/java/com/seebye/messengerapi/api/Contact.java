@@ -44,6 +44,8 @@ public class Contact
 			parcel.unmarshall(aBytes, 0, aBytes.length);
 
 			aContacts.add(new Contact(parcel));
+
+			parcel.recycle();
 		}
 
 		return aContacts;

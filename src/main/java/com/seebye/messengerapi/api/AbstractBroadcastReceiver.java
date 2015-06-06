@@ -11,6 +11,7 @@ import android.support.v4.*;
 import android.util.Log;
 
 import com.seebye.messengerapi.api.constants.Action;
+import com.seebye.messengerapi.api.constants.ErrorCode;
 import com.seebye.messengerapi.api.constants.Extra;
 import com.seebye.messengerapi.api.constants.General;
 import com.seebye.messengerapi.api.constants.Messenger;
@@ -70,6 +71,13 @@ public abstract class AbstractBroadcastReceiver extends BroadcastReceiver
 				if(nAction == Action.requestAccess.ordinal())
 				{
 					onEnabledStateChanged(responseType);
+				}
+
+				if(responseType == ResponseType.ERROR
+						&& extras.containsKey(Extra.ERROR_CODE.getKey())
+						&& ErrorCode.DENIED == ErrorCode.fromOrdinal(extras.getInt(Extra.ERROR_CODE.getKey())))
+				{
+					App.getSPAPI().set(SPKey.ENABLED, false);
 				}
 
 				switch(Action.fromOrdinal(nAction))
